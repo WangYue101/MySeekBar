@@ -62,7 +62,7 @@ public class MySeekBar extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         //进度条
-        barWith = (int) (w - h * 0.9 * 2);
+        barWith = (int) (w - h);
         barHeight = (int) (h * 0.8);
         barLeft = (w - barWith) / 2;
         barTop = (h - barHeight) / 2;
