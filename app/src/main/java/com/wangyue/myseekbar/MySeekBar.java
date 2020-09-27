@@ -217,14 +217,16 @@ public class MySeekBar extends View {
         float textSize = barHeight * 0.6f;
         mPaint.setTextSize(textSize);
         mPaint.getTextBounds(text, 0, text.length(), rect);
-        //文字位置
-        int thumbLeft = thumbPosition - thumbRadius - barLeft;
+        //滑块位置
+        int thumbLeft = thumbPosition - thumbRadius;
+        //滑块和进度条起始位置关系
+        int thumbToBar = thumbLeft - barLeft;
         int y = (getHeight() / 2) - rect.centerY();
 
         int textLeft;
         int textWidth = (int) (textSize * text.length())/2;
-        if (textWidth + thumbRadius / 2 > thumbLeft){
-            textLeft = (int) (thumbLeft + thumbRadius);
+        if (textWidth + thumbRadius > thumbToBar){
+            textLeft = (int) (thumbLeft + thumbRadius * 2);
         }
         else{
             textLeft = thumbLeft - textWidth;
