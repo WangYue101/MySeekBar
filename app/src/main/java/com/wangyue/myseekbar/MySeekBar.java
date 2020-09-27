@@ -40,6 +40,12 @@ public class MySeekBar extends View {
     private int thumbPosition;
     private int thumbColor = Color.WHITE;
 
+    /**
+     * 状态
+     */
+    //是否按下了滑块
+    private boolean isDownThumb = false;
+
 
     public MySeekBar(Context context) {
         super(context);
@@ -89,27 +95,35 @@ public class MySeekBar extends View {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 //按下
+                float downX = event.getX();
+                if (downX >= thumbPosition - thumbRadius
+                        && downX <= thumbPosition + thumbRadius
+                ){
+                    isDownThumb = true;
+                }
                 break;
 
             case MotionEvent.ACTION_MOVE:
                 //滑动
-                thumbPosition = (int) event.getX();
-                //滑块的位置不能超过滑块
-                if (thumbPosition < barLeft){
-                    thumbPosition = barLeft;
+                if (isDownThumb) {
+                    thumbPosition = (int) event.getX();
+                    //滑块的位置不能超过滑块
+                    if (thumbPosition < barLeft) {
+                        thumbPosition = barLeft;
+                    } else if (thumbPosition > barLeft + barWith) {
+                        thumbPosition = barLeft + barWith;
+                    }
+                    if (isHsvColor) {
+                        processHsvColor();
+                    }
+                    progressPositionListener();
+                    invalidate();
                 }
-                else if (thumbPosition > barLeft + barWith){
-                    thumbPosition = barLeft + barWith;
-                }
-                if (isHsvColor) {
-                    processHsvColor();
-                }
-                progressPositionListener();
-                invalidate();
                 break;
 
             case MotionEvent.ACTION_UP:
                 //松开
+                isDownThumb = false;
                 break;
         }
         return true;
